@@ -1,30 +1,63 @@
-import {Request, Response, NextFunction} from "express";
+import { Request, Response, NextFunction } from "express";
+import tarefasRepository from "../repositories/tarefasRepository";
+import Tarefa from "../models/tarefa";
 
-function getTarefas(req: Request, res: Response, next:NextFunction){
-  res.send("Listar todas as tarefas")
+async function getTarefas(req: Request, res: Response, next: NextFunction) {
+  const result = await tarefasRepository.getTarefas();
+  res.json(result);
 }
-function getTarefa(req: Request, res: Response, next:NextFunction){
-  res.send("Listar uma tarefa")
-}
-
-function criarTarefa(req: Request, res: Response, next:NextFunction){
-  res.send("Criar uma tarefa")
-}
-
-function atualizarTarefa(req: Request, res: Response, next:NextFunction){
-  res.send("Atulizar uma tarefa")
+async function getTarefa(req: Request, res: Response, next: NextFunction) {
+  const { id } = req.params;
+  const result = await tarefasRepository.getTarefa(parseInt(id));
+  const status = result ? 200 : 404;
+  res.status(status).json(result);
 }
 
-function deletarTarefa(req: Request, res: Response, next:NextFunction){
-  res.send("Deletar uam tarefa")
+async function criarTarefa(req: Request, res: Response, next: NextFunction) {
+  const tarefa = req.body as Tarefa;
+  try {
+    const result = await tarefasRepository.criarTarefa(tarefa);
+    return res.status(201).json(result);
+  } catch (error) {
+    console.log("error ao criar", error);
+    return res.status(400).json({ erro: "dados incpompletos" });
+  }
+}
+
+async function atualizarTarefa(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  const { id } = req.params;
+  const tarefa = req.body as Tarefa;
+  try {
+    const result = await tarefasRepository.atualizarTarefa(
+      parseInt(id),
+      tarefa,
+    );
+    return res.status(201).json(result);
+  } catch (error) {
+    console.log("error ao atualizar", error);
+    return res.status(400).json({ erro: "dados incpompletos" });
+  }
+}
+
+async function deletarTarefa(req: Request, res: Response, next: NextFunction) {
+  const {id} = req.params
+  try{
+    const result = await tarefasRepository.deletarTarefa(parseInt(id))
+    return res.status(201).json(result)
+  }catch(error){
+    console.log("Erro ao deletar", error)
+    return res.status(400).json({erro:'erro ao deletar tarefa'})
+  }
 }
 
 export default {
-  getTarefas, getTarefa,
-  criarTarefa, atualizarTarefa, deletarTarefa
-}
-
-
-
-
-
+  getTarefas,
+  getTarefa,
+  criarTarefa,
+  atualizarTarefa,
+  deletarTarefa,
+};
