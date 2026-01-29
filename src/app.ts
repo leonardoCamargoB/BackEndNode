@@ -1,9 +1,9 @@
 import express from "express";
 import { Request, Response, NextFunction } from "express";
-import router from "./routes/loginRouter";
+import handlerRouter from "./routes/router";
 
 const app = express();
 app.use(express.json());
-app.use("/logim", router);
+app.use(handlerRouter);
 
 export default app;

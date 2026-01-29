@@ -1,11 +1,9 @@
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 import loginController from "../controllers/loginController";
+import { log } from "console";
 
 const router = Router();
 
-router.post("/",()=>{
-    console.log('ok')
-
-});
+router.post("/", loginController.criarLogin);
 
 export default router;
