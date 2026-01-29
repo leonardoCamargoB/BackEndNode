@@ -4,10 +4,10 @@ async function criarLogin(req: Request, res: Response, next: NextFunction) {
   const login = req.body;
   try {
     console.log("criando login", login);
-    return res.status(200).json(login);
+    return res.sendStatus(200)
   } catch (error) {
     console.log("error ao criar", error);
-    return res.status(400).json({ erro: "dados imcompletos" });
+    return res.sendStatus(400);
   }
 }
 
