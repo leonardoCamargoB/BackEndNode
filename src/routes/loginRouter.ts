@@ -5,6 +5,6 @@ import { log } from "console";
 
 const router = Router();
 
-router.post("/login", loginController.criarLogin);
+router.post("/", loginController.criarLogin);
 
 export default router;

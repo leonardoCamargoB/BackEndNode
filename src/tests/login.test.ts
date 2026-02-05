@@ -5,8 +5,8 @@ test("POST /", async () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-        email: "teste@email.com",
-        password: "123456"})
+        email: "luiz@gmail.com",
+        senha: "123"})
     });
     expect(res.status).toBe(200);
     // const body = await res.json();

@@ -3,25 +3,26 @@
   import loginRepository from "../repositories/loginRepository";
   
   async function criarLogin(req: Request, res: Response, next:NextFunction){
-    const {Email, senha} = req.body
-    if(!Email || !senha){
+    const {email, senha} = req.body
+
+    if(!email || !senha){
       return res.status(400).json({erro:"Email e senha são obrigatorios"})
     }
   
-    if(Email.trim() === "" || senha.trim() === ""){
-      return res.status(400).json({erro: "Email e senha estão vazios"})
-    
+    if(email.trim() === "" || senha.trim() === ""){
+      return res.status(401).json({erro: "Email e senha estão vazios"})
     }
   
     try{
-      const result = await loginRepository.validarLogin(Email)
-      if(!result){throw new Error()}
+      const result = await loginRepository.validarLogin(email)
+      if(!result){throw new Error("email nao encontrado")}
   
       console.log(result.email)
       console.log(result.senha)
       return res.sendStatus(200);
     }catch(error){
-      return res.status(400).json({erro: "credenciais invalidas"})
+      console.log(error)
+      return res.status(404).json({erro: "credenciais invalidas"})
     }
   
   
