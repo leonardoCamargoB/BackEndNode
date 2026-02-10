@@ -9,6 +9,8 @@ const handlerRouter = Router();
 // rotas publicas
 handlerRouter.use("/tarefas", rotaTarefa);
 handlerRouter.use("/api/login", router);
+handlerRouter.use("/api/reserva", router);
+handlerRouter.use("/api/pedido", router);
 
 
 

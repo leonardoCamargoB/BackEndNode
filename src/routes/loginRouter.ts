@@ -9,4 +9,4 @@ const router = Router();
 router.post("/", loginController.criarLogin);
 router.post("/cadastro", cadastroController.criarCadastro);
 
-export default router;
+export default router; 

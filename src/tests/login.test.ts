@@ -1,13 +1,13 @@
 import { json } from "stream/consumers";
 
-const url_base:string = "http://localhost:3000/api/login";
+const url_login:string = "http://localhost:3000/api/login";
 
 test("POST /", async () => {
-    const res = await fetch(url_base, {
+    const res = await fetch(url_login, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-        email: "luiz@gmail.com",
+        email: "jujudopix@example.com",
         senha: "123"})
     });
     expect(res.status).toBe(200);
