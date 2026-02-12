@@ -7,6 +7,7 @@ test("POST /", async () => {
         body: JSON.stringify({
         usuario_id: 1,
         cliente_id: 1,
+        data: "2024-06-01",
         pagamento: "Cartão"
     })
     });

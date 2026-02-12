@@ -3,17 +3,23 @@ import pedidoRepository from "../repositories/pedidoRepository";
 
 async function criarPedido(req: Request, res: Response, next: NextFunction){
     console.log("Criando pedido...");
-    const {usuario_id, cliente_id,  pagamento} = req.body;
+    const {usuario_id, cliente_id, data, pagamento} = req.body;
 
-    if(!usuario_id || !cliente_id || !pagamento){
-        return res.status(401).json({erro: "Todos os campos são obrigatórios"});
+    if (!usuario_id || !cliente_id || !data || !pagamento) {
+    return res.status(400).json({ erro: "Todos os campos são obrigatórios" });
     }
-    if(usuario_id.trim() === "" || cliente_id.trim() === ""  || pagamento.trim() === ""){
-        return res.status(404).json({erro: "Os campos não podem ser vazios"});
+
+    if (typeof usuario_id !== "number" || typeof cliente_id !== "number") {
+        return res.status(400).json({ erro: "IDs devem ser números" });
     }
+
+    if (data.trim() === "" || pagamento.trim() === "") {
+        return res.status(400).json({ erro: "Campos não podem ser vazios" });
+}
+
 
     try{
-        await pedidoRepository.criarPedido({usuario_id, cliente_id, pagamento} as any);
+        await pedidoRepository.criarPedido({usuario_id, cliente_id, data, pagamento} as any);
         return res.status(200).json({
             mensagem: "Pedido criado com sucesso"
         });
