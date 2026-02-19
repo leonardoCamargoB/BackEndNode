@@ -1,17 +1,40 @@
-import {pool} from "../dataBase/dataBase";
-import { reserva } from "../models/reserva";
+import {pool} from '../dataBase/dataBase'
+import { ResultSetHeader, RowDataPacket } from 'mysql2'
+
+async function fazerPedido(data:any) {
+    const sql = "INSERT INTO pedidos (usuario_id,pagamento) VALUES (?, ?)"
 
 
-async function criarReserva(reserva: reserva): Promise<void>{
-    console.log("Criando reserva no banco de dados...");
-    const sql = `INSERT INTO reservas (pedido_id, quarto_id, adicional_id, fim, inicio) VALUES (?, ?, ?, ?, ?)`;
-        const [result] = await pool.query(sql, [reserva.pedido_id, reserva.quarto_id, reserva.adicional_id, reserva.fim, reserva.inicio
+    try {
+        const [result] = await pool.query<ResultSetHeader>(sql, [
+            data.usuario_id,
+            data.pagamento
         ]);
-
-        
-
+        return result.insertId;
+    } catch (error) {
+        console.error("Erro ao fazer pedido:", error);
+    return null;
+    }
 }
 
-export default {    
-    criarReserva
+async function fazerReserva(idPedido:number, quarto:any) {
+    const sql = "INSERT INTO reservas (pedido_id, quarto_id, data_inicio, data_fim) VALUES (?, ?, ?, ?)"
+    
+    try{
+        const [result] = await pool.query<ResultSetHeader>(sql, [
+            idPedido,
+            quarto.id,
+            quarto.dataInicio,
+            quarto.dataFim
+        ]);
+        return result.insertId;
+    }catch (error) {
+        console.error("Erro ao fazer reserva:", error);
+    return null;
+    }
+}
+
+export default {
+    fazerPedido,
+    fazerReserva
 }

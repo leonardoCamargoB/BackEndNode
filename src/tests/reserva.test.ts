@@ -1,18 +1,35 @@
-const url_reserva:string = "http://localhost:3000/api/reserva";
-
-test("POST /", async () => {
-    const res = await fetch(url_reserva, {
+test("POST /api/reserva = 200", async () => {
+    const res = await fetch("http://localhost:3000/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-        pedido_id: 1,
-        quarto_id: 1,
-        adicional_id: 1,
-        fim: "2024-12-31",
-        inicio: "2024-01-01"
-    })
+        body: JSON.stringify ({
+        email: "luiz@gmail.com",
+        senha: "123"}
+        )
     });
     expect(res.status).toBe(200);
-    const json = await res.json();
-    console.log(json)
+    const token = await res.json()
+    console.log(token);
+    // const body = await res.json();
+    // expect(body.message).toBe("Login recebido com sucesso");
+    const resp = await fetch("http://localhost:3000/api/reservas", {
+        method: "POST",
+        headers: {
+            "content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({
+            pagamento: "Cartão",
+            quartos: [
+                {
+                    id: 1,
+                    dataInicio: "02/19/2026",
+                    dataFim: "02/20/2026",
+                }
+            ]
+        })
+    })
+    expect(resp.status).toBe(200);
+    // const json = await resp.json();
+    // console.log(json);
 });

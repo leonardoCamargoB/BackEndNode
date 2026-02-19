@@ -1,32 +1,60 @@
-import { NextFunction, Request, Response } from "express";
-import { pool } from "../dataBase/dataBase";
+import { Request, Response, NextFunction} from "express";
 import reservaRepository from "../repositories/reservaRepository";
-import { reserva } from "../models/reserva";
 
-async function criarReserva(req: Request, res: Response, next: NextFunction){
-    console.log("Criando reserva...");
-    const {pedido_id, quarto_id, adicional_id, fim, inicio} = req.body;
+async function corrigitDataHora(data:string, hora: number) {
+    let novaData = new Date(data);
+    novaData.setHours(hora, 0, 0);
+    return novaData;
+}
 
-    if(!pedido_id || !quarto_id || !adicional_id || !fim || !inicio){
-        return res.status(400).json({erro: "Todos os campos são obrigatórios"});
-    }
-    if(pedido_id.trim() === "" || quarto_id.trim() === "" || adicional_id.trim() === "" || fim.trim() === "" || inicio.trim() === ""){
-        return res.status(400).json({erro: "Os campos não podem ser vazios"});
-    }
+export async function criarPedido(req: Request, res: Response , next: NextFunction) {
 
-    try{
-        const novaReserva = await reservaRepository.criarReserva({pedido_id, quarto_id, adicional_id, fim, inicio} as reserva);
-        return res.status(200).json({
-            mensagem: "Reserva criada com sucesso",
-            novaReserva
-        });
-    }catch(error){
-        console.log(error);
-        return res.status(500).json({erro: "Erro ao criar reserva"});
+    const token = req.payload;
+    const {pagamento, quartos} = req.body;
+
+    if (!token.id || !pagamento || !quartos) {
+        return res.status(400).json({ error: "Dados incompletos" });
     }
 
+    try {
+        const dadosPedido = {
+            cliente_id: token.id,
+            pagamento: pagamento,
+        }
+        const pedidoId = await reservaRepository.fazerPedido(dadosPedido);
+            if (!pedidoId){throw new Error("Falha ao criar pedido");}
+
+            let result =[]
+            for (let q of quartos) {
+            q.dataInicio = corrigitDataHora(q.dataInicio, 14);
+            q.dataFim = corrigitDataHora(q.dataFim, 12);
+            console.log(q);
+
+
+            const reservaId = await reservaRepository.fazerReserva(pedidoId, q);
+            if (!reservaId){continue}
+            result.push({
+                ...q,
+                reservaId: reservaId
+            })
+    }
+        console.log(result);
+            res.status(200).json({
+                message: "Pedido criado com sucesso",
+                pedidoId: pedidoId
+            })
+
+    }catch (error) {
+        console.error("Erro ao criar pedido:", error);
+        return res.status(500).json({ error: "Erro interno do servidor" });
+    }
+
+    console.log(token);
+    console.log(pagamento);
+    console.log(quartos); 
+    return res.sendStatus(200);
 }
 
 export default {
-    criarReserva
-};
+    criarPedido
+}

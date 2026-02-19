@@ -11,6 +11,8 @@ handlerRouter.use("/tarefas", rotaTarefa);
 handlerRouter.use("/api/login", router);
 handlerRouter.use("/api/reserva", router);
 handlerRouter.use("/api/pedido", router);
+handlerRouter.use("/api/quartosDisponiveis", router);
+handlerRouter.use("/api/reservas", router);
 
 
 
