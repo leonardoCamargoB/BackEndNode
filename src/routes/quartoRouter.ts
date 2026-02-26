@@ -1,9 +1,8 @@
 import { Router } from "express";
-import quartosController from "../controllers/quartosController";
+import quartosController from "../controllers/quartosController"
 
-const router = Router();
-console.log("Configurando rota de quartos...");
+const rotaQuartos = Router();
 
-router.post("/", quartosController.disponiveis);
+rotaQuartos.post("/", quartosController.disponiveis)
 
-export default router;
+export default rotaQuartos;

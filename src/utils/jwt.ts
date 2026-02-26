@@ -12,7 +12,7 @@ export function createJWT(data: object) {
   }
 
   return jwt.sign(payload, JWT_SECRET, {
-    expiresIn: DURATION,
+    //expiresIn: DURATION,
     algorithm: "HS256"
   })
 }
