@@ -60,7 +60,7 @@ async function cadastroCliente(req:Request, res:Response, next:NextFunction) {
         return res.status(200).json(token);
 
     } catch (error) {
-        console.log("Erro", error)
+        console.error("Erro", error)
         return res.status(400).json({erro:"Erro ao criar Login"})
     }
 }

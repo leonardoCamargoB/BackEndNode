@@ -4,7 +4,7 @@ import {corrigirDataHora} from "../utils/datahora";
 
 
 async function criarPedido(req:Request, res:Response, next:NextFunction) {
-    const token = req.payload ;
+    const token = (req as any).playload;
     const {pagamento, quartos} = req.body;
 
     if (!token.id || !pagamento || !quartos){
