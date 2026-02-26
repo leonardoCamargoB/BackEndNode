@@ -5,7 +5,7 @@ test("POST / login = 200", async () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            email: "jujudopix@example.com",
+            email: "braga@email.com",
             senha: "123"}
         )
     });
@@ -16,13 +16,13 @@ test("POST / login = 200", async () => {
 
 
 
-/* test("POST / create = 200", async () => {
+/*test("POST / create = 200", async () => {
     const res = await fetch(url_base + "/cadastro" , {
         method: "POST",
         headers: { "Content-Type": "application/json" },        
         body: JSON.stringify({
-            nome: "Braga",
-            email: "braga@email.com",
+            nome: "Juanito",
+            email: "juanito@email.com",
             senha: "123",
             telefone: "157070-7070",
             cpf:"123456789-55"

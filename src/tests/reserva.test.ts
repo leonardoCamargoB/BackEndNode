@@ -7,7 +7,7 @@ test("POST / login = 200", async () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            email: "jujudopix@example.com",
+            email: "braga@email.com",
             senha: "123"}
         )
     });
@@ -27,7 +27,7 @@ test("POST / login = 200", async () => {
                 {
                     id: 1,
                     fim: "2026/02/25",
-                    inicio: "2026/02/20",
+                    inicio: "2026/02/24",
                 }
 
             ]
