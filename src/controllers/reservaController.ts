@@ -1,14 +1,14 @@
 import {Request, Response, NextFunction} from "express"
-import reservaRespository from "../repositories/reservaRepository"
+import reservaRespository from "../repositories/reservaRepository";
 import {corrigirDataHora} from "../utils/datahora";
 
 
 async function criarPedido(req:Request, res:Response, next:NextFunction) {
-    const token = (req as any).playload;
+    const token = (req as any).payload ;
     const {pagamento, quartos} = req.body;
 
     if (!token.id || !pagamento || !quartos){
-        return res.status(401).json({erro: "Dados incompletos!"})
+        return res.status(400).json({erro: "Dados incompletos!"})
     }
 
     try {
@@ -23,8 +23,8 @@ async function criarPedido(req:Request, res:Response, next:NextFunction) {
         //criar a reserva para cada um dos quartos
         let result = []
         for (let q of quartos){
-            q.fim = await corrigirDataHora(q.fim, 14)
-            q.inicio = await corrigirDataHora(q.inicio, 12)
+            q.fim = await corrigirDataHora(q.fim, 12)
+            q.inicio = await corrigirDataHora(q.inicio, 14)
             const reservaID = await reservaRespository.fazerReserva(pedidoID, q)
             if (!reservaID){continue}
             result.push({
@@ -41,8 +41,8 @@ async function criarPedido(req:Request, res:Response, next:NextFunction) {
 
 
     } catch (error) {
-        console.log(error)
-        return res.status(402).json({erro: "Reserva não efetuada!"})
+        console.error(error)
+        return res.status(400).json({erro: "Reserva não efetuada!"})
     }
 
 }

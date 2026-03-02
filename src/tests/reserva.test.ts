@@ -1,9 +1,8 @@
 import { url } from "inspector";
 
-const url_base:string = "http://localhost:3000/api/login";
-
-test("POST / login = 200", async () => {
-    const res = await fetch(url_base, {
+test("POST: /api/reserva = 200", async()=>{
+    // realizar login
+    const res = await fetch("http://localhost:3000/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -14,7 +13,6 @@ test("POST / login = 200", async () => {
     expect(res.status).toBe(200);
     const token = await res.json()
 
-    //realizar reserva
     const resp = await fetch("http://localhost:3000/api/reserva",{
         method: "POST",
         headers: { 
@@ -36,5 +34,4 @@ test("POST / login = 200", async () => {
     });
     expect(resp.status).toBe(200);
     const json = await resp.json()
-    console.log(json)
 })

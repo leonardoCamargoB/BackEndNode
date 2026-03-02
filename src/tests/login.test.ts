@@ -5,7 +5,7 @@ test("POST / login = 200", async () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            email: "braga@email.com",
+            email: "juanito@email.com",
             senha: "123"}
         )
     });
@@ -16,7 +16,7 @@ test("POST / login = 200", async () => {
 
 
 
-/*test("POST / create = 200", async () => {
+test("POST / create = 200", async () => {
     const res = await fetch(url_base + "/cadastro" , {
         method: "POST",
         headers: { "Content-Type": "application/json" },        
@@ -31,4 +31,4 @@ test("POST / login = 200", async () => {
     expect(res.status).toBe(200);
     const token = await res.json();
     // console.log(token)
-}); */
+});
